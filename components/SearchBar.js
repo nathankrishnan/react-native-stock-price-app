@@ -28,7 +28,7 @@ export default class SearchBar extends React.Component {
 
 		if (textValue.length > 0) {
 			// Run the onSubmit function with the textValue as input
-			onSubmit(text);
+			onSubmit(textValue);
 
 			// Clear the textValue from the component's state
 			this.setState({
@@ -60,7 +60,7 @@ export default class SearchBar extends React.Component {
 				</View>
 				<TouchableOpacity
           style={styles.submitButton}
-          onPress={() => Alert.alert('Simple Button pressed')}
+          onPress={this.handleSubmitEditing}
       	>
 					<Text style={[styles.buttonText, styles.textStyle]}>Submit</Text>
 				</TouchableOpacity>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 	container: {
 		height: 40,
 		marginTop: 20,
-		backgroundColor: '#666',
+		backgroundColor: '#7F8C8D',
 		marginHorizontal: 80,
 		paddingHorizontal: 10,
 		borderRadius: 5,
