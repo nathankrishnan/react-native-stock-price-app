@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { StyleSheet, TextInput, Text, TouchableOpacity, View } from 'react-native';
 
 export default class SearchBar extends React.Component {
 	// Initialize our SearchBar's state to empty text
