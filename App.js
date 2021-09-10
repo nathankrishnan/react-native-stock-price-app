@@ -1,7 +1,14 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Text, View, StatusBar} from 'react-native';
+import { 
+  ImageBackground, 
+  StyleSheet, 
+  Text, 
+  View, 
+  StatusBar,
+  ActivityIndicator
+} from 'react-native';
 
-import SearchBar from './components/SearchBar';
+import StockView from './components/StockView';
 import fetchStockPrice from './utils/fetchStockPrice';
 
 export default class App extends React.Component {
@@ -28,10 +35,10 @@ export default class App extends React.Component {
           this.setState({
             error: false,
             loading: false,
-            stockName,
-            stockPrice,
-            changeType,
-            changeValue
+            stockName: stockName,
+            stockPrice: stockPrice,
+            changeType: changeType,
+            changeValue: changeValue
           });
         } catch (e) {
           this.setState({
@@ -68,16 +75,27 @@ export default class App extends React.Component {
           imageStyle={styles.image}
         >
           <View style={styles.detailsContainer}>
-            <Text style={[styles.mediumText, styles.textStyle]}>{stockName}</Text>
-            <Text style={[styles.largeText, styles.textStyle]}>{stockPrice}</Text>
-            <View style={[styles.rectangleShapeContainer, changeType === "+" ? styles.positiveChange : styles.negativeChange]}>
-              <Text style={[styles.smallText, styles.textStyle]}>{changeValue}</Text>
-            </View>
-
-            <SearchBar 
-              placeholderTextInputLabelText="Search (e.g. AAPL)" 
-              onSubmit={this.handleFetchStockPrice}
+            <ActivityIndicator
+              animating={loading}
+              color="#007AFF"
+              size="large"
             />
+
+            {!loading && error &&
+              <Text style={[styles.smallText, styles.textStyle]}>
+                Could not load the stock price, please try again.
+              </Text>
+            }
+
+            {!loading && !error &&
+              <StockView 
+                stockName={stockName}
+                stockPrice={stockPrice}
+                changeType={changeType}
+                changeValue={changeValue}
+                onSubmit={this.handleFetchStockPrice}
+              />
+            }
           </View>
         </ImageBackground>
       </View>
@@ -88,34 +106,15 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
   },
   textStyle: {
     fontFamily: 'AvenirNext-Regular',
     textAlign: 'center',
     color: 'white',
   },
-  largeText: {
-    fontSize: 45,
-  },
-  mediumText: {
-    fontSize: 35,
-  },
   smallText: {
     fontSize: 25,
-  },
-  rectangleShapeContainer: {
-    marginTop: 5,
-    marginHorizontal: 160,
-    borderRadius: 20,
-    justifyContent: 'center',
-    backgroundColor: 'green',
-  },
-  positiveChange: {
-    backgroundColor: 'green',
-  },
-  negativeChange: {
-    backgroundColor: 'red',
   },
   imageContainer: {
     flex: 1,
