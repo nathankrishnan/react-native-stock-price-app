@@ -2,14 +2,63 @@ import React from 'react';
 import { ImageBackground, StyleSheet, Text, View, StatusBar} from 'react-native';
 
 import SearchBar from './components/SearchBar';
+import fetchStockPrice from './utils/fetchStockPrice';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      error: false,
+      stockName: '',
+      stockPrice: 0,
+      changeType: '+',
+      changeValue: 0,
+    }
+  }
 
-  handleFetchStockPrice = () => {
+  handleFetchStockPrice = async (stockTickerSymbol) => {
+    if (stockTickerSymbol) {
+      this.setState({
+        loading: true
+      }, async () => {
+        try {
+          const { changeType, changeValue, stockName, stockPrice } = await fetchStockPrice(stockTickerSymbol);
 
+          this.setState({
+            error: false,
+            loading: false,
+            stockName,
+            stockPrice,
+            changeType,
+            changeValue
+          });
+        } catch (e) {
+          this.setState({
+            error: true,
+            loading: false
+          });
+        }
+      });
+    } else {
+      return;
+    }
+  }
+
+  componentDidMount() {
+    this.handleFetchStockPrice('TSLA')
   }
 
   render() {
+    const {
+      loading,
+      error,
+      stockName,
+      stockPrice,
+      changeType,
+      changeValue
+    } = this.state;
+
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
@@ -19,14 +68,14 @@ export default class App extends React.Component {
           imageStyle={styles.image}
         >
           <View style={styles.detailsContainer}>
-            <Text style={[styles.mediumText, styles.textStyle]}>Tesla, Inc</Text>
-            <Text style={[styles.largeText, styles.textStyle]}>754.86</Text>
-            <View style={styles.rectangleShapeContainer}>
-              <Text style={[styles.smallText, styles.textStyle]}>+0.98</Text>
+            <Text style={[styles.mediumText, styles.textStyle]}>{stockName}</Text>
+            <Text style={[styles.largeText, styles.textStyle]}>{stockPrice}</Text>
+            <View style={[styles.rectangleShapeContainer, changeType === "+" ? styles.positiveChange : styles.negativeChange]}>
+              <Text style={[styles.smallText, styles.textStyle]}>{changeValue}</Text>
             </View>
 
             <SearchBar 
-              placeholderTextInputLabelText="Enter a stock ticker symbol (e.g. AAPL)" 
+              placeholderTextInputLabelText="Search (e.g. AAPL)" 
               onSubmit={this.handleFetchStockPrice}
             />
           </View>
@@ -61,6 +110,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     backgroundColor: 'green',
+  },
+  positiveChange: {
+    backgroundColor: 'green',
+  },
+  negativeChange: {
+    backgroundColor: 'red',
   },
   imageContainer: {
     flex: 1,
