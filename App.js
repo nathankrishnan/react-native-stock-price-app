@@ -1,7 +1,14 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, Text, View, StatusBar} from 'react-native';
 
+import SearchBar from './components/SearchBar';
+
 export default class App extends React.Component {
+
+  handleFetchStockPrice = () => {
+
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -17,6 +24,11 @@ export default class App extends React.Component {
             <View style={styles.rectangleShapeContainer}>
               <Text style={[styles.smallText, styles.textStyle]}>+0.98</Text>
             </View>
+
+            <SearchBar 
+              placeholderTextInputLabelText="Enter a stock ticker symbol (e.g. AAPL)" 
+              onSubmit={this.handleFetchStockPrice}
+            />
           </View>
         </ImageBackground>
       </View>
