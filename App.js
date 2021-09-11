@@ -14,6 +14,7 @@ import fetchStockPrice from './utils/fetchStockPrice';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    // Initializing the properties in our local state
     this.state = {
       loading: false,
       error: false,
@@ -24,6 +25,7 @@ export default class App extends React.Component {
     }
   }
 
+  // Callback function to execute fetchStockPrice(...) and update our local state accordingly
   handleFetchStockPrice = async (stockTickerSymbol) => {
     if (stockTickerSymbol) {
       this.setState({
@@ -52,6 +54,9 @@ export default class App extends React.Component {
     }
   }
 
+  // This is a React Native lifecyle method
+  // componentDidMount() executes immediately after the component (in this case App) 
+  // is inserted in the view hierarchy
   componentDidMount() {
     this.handleFetchStockPrice('TSLA')
   }
