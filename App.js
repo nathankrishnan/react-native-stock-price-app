@@ -8,6 +8,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 
+import SearchBar from './components/SearchBar';
 import StockView from './components/StockView';
 import fetchStockPrice from './utils/fetchStockPrice';
 
@@ -87,9 +88,15 @@ export default class App extends React.Component {
             />
 
             {!loading && error &&
-              <Text style={[styles.smallText, styles.textStyle]}>
-                Could not load the stock price, please try again.
-              </Text>
+              <View>
+                <Text style={[styles.smallText, styles.textStyle]}>
+                  Could not load the stock price, please try again.
+                </Text>
+                <SearchBar
+                  placeholderTextInputLabelText="Search (e.g. AAPL)"
+                  onSubmit={this.handleFetchStockPrice}
+                />
+              </View>
             }
 
             {!loading && !error &&
