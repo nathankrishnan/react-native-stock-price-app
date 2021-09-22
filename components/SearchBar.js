@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, TextInput, Text, TouchableOpacity, View } from 'react-native';
 
+import addTestIdentifiers from '../utils/addTestIdentifiers';
+
 export default class SearchBar extends React.Component {
 	// Initialize our SearchBar's state to empty text
 	constructor(props) {
@@ -46,7 +48,8 @@ export default class SearchBar extends React.Component {
 		return (
 			<View>
 				<View style={styles.container}>
-					<TextInput 
+					<TextInput
+						{...addTestIdentifiers('stockTickerSymbolSearchInput')} 
 						style={styles.textInput}
 						value={textValue}
 						placeholder={placeholderTextInputLabelText}
@@ -59,6 +62,7 @@ export default class SearchBar extends React.Component {
 					/>				
 				</View>
 				<TouchableOpacity
+          {...addTestIdentifiers('stockTickerSymbolSearchBtn')}
           style={styles.submitButton}
           onPress={this.handleSubmitEditing}
       	>
